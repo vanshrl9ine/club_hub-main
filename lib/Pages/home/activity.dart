@@ -34,6 +34,7 @@ class _ActivityPageState extends State<ActivityPage> {
       },
       child: Card(
         elevation: 0,
+
         color: const Color.fromARGB(0, 159, 167, 173),
         child: Stack(
           children: [
