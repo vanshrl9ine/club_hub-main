@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "308090942658",
+    "project_id": "clubhub-739f9",
+    "storage_bucket": "clubhub-739f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308090942658:android:09da31fff69024ed5af75b",
+        "android_client_info": {
+          "package_name": "com.yash.clubhub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmjNEKHbcuozElOp75pwtp_5dvUY9AnT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
