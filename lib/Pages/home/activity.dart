@@ -30,57 +30,71 @@ class _ActivityPageState extends State<ActivityPage> {
   InkWell activityItem(int index) {
     return InkWell(
       onTap: () {
-
+        // Handle onTap event if needed
       },
       child: Card(
         elevation: 0,
         color: const Color.fromARGB(0, 159, 167, 173),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
             // Display the image of the announcement
             Image.network(
               _activities[index]['image'],
               // Replace with the actual field containing the image URL
               height: 150,
-              width: 200,// Set the desired height
-
+              width: 370, // Set the desired height
+              fit: BoxFit.cover, // Ensure the image covers the entire area
             ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _activities[index]['title'],
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black,
-                          offset: Offset(2, 2),
-                          blurRadius: 6,
-                        ),
-                      ],
+            Positioned(
+              top: 0,
+              left: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _activities[index]['title'],
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black,
+                            offset: Offset(2, 2),
+                            blurRadius: 6,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 1),
-                  Text(
-                    _activities[index]['description'],
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    // Convert timestamp to date
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _activities[index]['description'],
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      // Convert timestamp to date
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -88,6 +102,9 @@ class _ActivityPageState extends State<ActivityPage> {
       ),
     );
   }
+
+
+
 
 
 
@@ -110,7 +127,9 @@ class _ActivityPageState extends State<ActivityPage> {
         title: Text(
           'ClubHub',
           style: TextStyle(
+
             fontSize: 22,
+
             // Adjust the size as needed
           ),
         ),
