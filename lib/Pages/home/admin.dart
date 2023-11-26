@@ -25,12 +25,7 @@ class AdminPage extends StatelessWidget {
         ),
         child:
             Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          Image(
-            image: const AssetImage('assets/logo.png'),
-            height: size.height * 0.15,
-            width: size.width * 0.6,
-            fit: BoxFit.fill,
-          ),
+
           InkWell(
             onTap: () => Navigator.push(
                 context,

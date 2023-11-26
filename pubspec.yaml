@@ -33,6 +33,7 @@ dependencies:
   table_calendar: ^3.0.9
   intl: ^0.18.1
   provider: ^6.1.1
+  google_fonts: ^2.1.0
   flutter_local_notifications: ^16.1.0
   get:
   font_awesome_flutter:

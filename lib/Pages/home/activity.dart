@@ -30,74 +30,65 @@ class _ActivityPageState extends State<ActivityPage> {
   InkWell activityItem(int index) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: ((context) => ActivityItem(
-              title: _activities[index]['title'],
-              description: _activities[index]['description'],
-              imageUrl: _activities[index]['image'],
-              createdBy: _activities[index]['createdBy'],
-            )),
-          ),
-        );
+
       },
       child: Card(
-        elevation: 5,
-        color: const Color.fromARGB(255, 159, 167, 173),
-        child: SizedBox(
-          height: 75,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 8, left: 8, bottom: 8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _activities[index]['title'],
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black,
-                              offset: Offset(2, 2),
-                              blurRadius: 6,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Text(
-                        _activities[index]['description'],
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        //convert timestamp to date
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 53, 53, 53),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Icon(Icons.arrow_forward_ios),
-                const SizedBox(
-                  width: 8,
-                )
-              ],
+        elevation: 0,
+        color: const Color.fromARGB(0, 159, 167, 173),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Display the image of the announcement
+            Image.network(
+              _activities[index]['image'],
+              // Replace with the actual field containing the image URL
+              height: 150,
+              width: 200,// Set the desired height
+
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _activities[index]['title'],
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black,
+                          offset: Offset(2, 2),
+                          blurRadius: 6,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 1),
+                  Text(
+                    _activities[index]['description'],
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    // Convert timestamp to date
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
+
 
 
   @override
@@ -116,7 +107,14 @@ class _ActivityPageState extends State<ActivityPage> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Activity Page'),
+        title: Text(
+          'ClubHub',
+          style: TextStyle(
+            fontSize: 22,
+            // Adjust the size as needed
+          ),
+        ),
+        automaticallyImplyLeading: false, // Add this line to remove the back arrow icon
         actions: [
           IconButton(
             icon: const Icon(Icons.calendar_today),
@@ -125,7 +123,22 @@ class _ActivityPageState extends State<ActivityPage> {
             },
           ),
         ],
+        backgroundColor: Colors.black,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.black,
+                // Add additional colors if needed
+              ],
+            ),
+          ),
+        ),
       ),
+
+
       body: Center(
         child: Container(
           height: size.height,

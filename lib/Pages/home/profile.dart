@@ -174,6 +174,42 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ),
                                         ],
                                       ),
+
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsetsDirectional.fromSTEB(0, 8, 16, 8),
+                                              child: Icon(
+                                                Icons.group_rounded,
+                                                color: Colors.white,
+                                                size: 24,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Padding(
+                                                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                                                child: Text(
+                                                  'My Clubs',
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.chevron_right_rounded,
+                                              color: Colors.white,
+                                              size: 24,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                       Padding(
                                         padding: const EdgeInsetsDirectional
                                             .fromSTEB(0, 0, 0, 8),
