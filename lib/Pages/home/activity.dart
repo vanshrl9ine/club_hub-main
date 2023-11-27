@@ -20,13 +20,16 @@ class _ActivityPageState extends State<ActivityPage> {
   late List<Map<String, dynamic>> _activities = [];
   _fetchAnnouncements() async {
     QuerySnapshot<Map<String, dynamic>> docs =
-        await FirebaseFirestore.instance.collection('announcements').get();
+    await FirebaseFirestore.instance.collection('announcements').get();
+
     setState(() {
       _activities = docs.docs.map((doc) => doc.data()).toList();
-      //order activities by date
-      _activities.sort((a, b) => a['date'].compareTo(b['date']));
+
+      // Order activities by date in descending order (most recent first)
+      _activities.sort((a, b) => b['date'].compareTo(a['date']));
     });
   }
+
   InkWell activityItem(int index) {
     return InkWell(
       onTap: () {
