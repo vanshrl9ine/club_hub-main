@@ -1,3 +1,5 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:club_hub/Pages/LoginAndSignup/signup.dart';
 import 'package:club_hub/main.dart';
@@ -16,7 +18,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordController=TextEditingController();
   late ScaffoldMessengerState scaffoldMessenger;
   @override
   Widget build(BuildContext context) {
@@ -90,26 +92,29 @@ class _LoginPageState extends State<LoginPage> {
                   height: 50,
                   child: TextFormField(
                     controller: passwordController,
+                    obscureText: true, // Set this property to true
                     decoration: InputDecoration(
-                        labelText: 'Password',
-                        labelStyle: const TextStyle(color: Colors.white),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 150, 150, 150),
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
+                      labelText: 'Password',
+                      labelStyle: const TextStyle(color: Colors.white),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 150, 150, 150),
+                          width: 2,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Colors.white,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                        )),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: Colors.white,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
                     style: const TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
+
                 const SizedBox(height: 20),
                 SizedBox(
                   height: 40,

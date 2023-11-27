@@ -206,6 +206,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               Icons.chevron_right_rounded,
                                               color: Colors.white,
                                               size: 24,
+
                                             ),
                                           ],
                                         ),
