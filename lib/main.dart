@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
         body: _pages[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.shifting,
-          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+          backgroundColor: Colors.black,
           currentIndex: currentIndex,
           selectedIconTheme: const IconThemeData(color: Colors.blue),
           selectedFontSize: 14,

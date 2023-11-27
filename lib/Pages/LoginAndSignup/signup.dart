@@ -116,6 +116,7 @@ class _SignupPageState extends State<SignupPage> {
                   height: 50,
                   child: TextFormField(
                     controller: passwordController,
+                    obscureText: true,
                     decoration: InputDecoration(
                         labelText: 'Password',
                         labelStyle: const TextStyle(color: Colors.white),
