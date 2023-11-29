@@ -13,6 +13,7 @@ class ActivityPage extends StatefulWidget {
 }
 
 class _ActivityPageState extends State<ActivityPage> {
+  String? _eventTitleError;
   late CalendarFormat _calendarFormat;
   late DateTime _focusedDay;
   late DateTime _selectedDay;
@@ -291,12 +292,16 @@ class _ActivityPageState extends State<ActivityPage> {
 
                 if (profileType == 'Admin') // Only admins can add events
                   TextField(
-                    decoration: const InputDecoration(labelText: 'New Event'),
+                    decoration: InputDecoration(
+                      labelText: 'New Event',
+                      errorText: _eventTitleError, // Show the error message here
+                    ),
                     onSubmitted: (value) {
                       _addEvent(value);
-                      Navigator.pop(context); // Close the dialog after adding the event
+                      Navigator.pop(context);
                     },
                   ),
+
               ],
             ),
             actions: [
@@ -310,15 +315,14 @@ class _ActivityPageState extends State<ActivityPage> {
                 TextButton(
                   onPressed: () {
                     // You can add additional logic here if needed
-                    _addEvent('Default Event'); // Add a default event when "OK" is pressed
-                    Navigator.pop(context); // Close the dialog after adding the event
+                    Navigator.pop(context);
                   },
                   child: const Text('OK'),
                 ),
             ],
           );
         }
-      }
+      },
     );
   }
   Widget _buildEventItem(Event event, String profileType) {
@@ -379,6 +383,20 @@ class _ActivityPageState extends State<ActivityPage> {
 
 
   void _addEvent(String title) async {
+    // Check if the event title is not blank
+    if (title.trim().isEmpty) {
+      // Set the error message
+      setState(() {
+        _eventTitleError = 'Event title cannot be blank.';
+      });
+      return; // Exit the method if the event title is blank
+    }
+
+    // Reset the error message
+    setState(() {
+      _eventTitleError = null;
+    });
+
     // Check the user's profile type before allowing to add an event
     String userUid = FirebaseAuth.instance.currentUser!.uid;
     DocumentSnapshot<Map<String, dynamic>> userSnapshot = await FirebaseFirestore.instance
@@ -391,24 +409,33 @@ class _ActivityPageState extends State<ActivityPage> {
     if (profileType == 'Admin') {
       final newEvent = Event(title, _selectedDay);
 
-      // Add the new event to the local list
-      setState(() {
+      try {
+        // Add the new event to Firestore
+        await FirebaseFirestore.instance.collection('events').add({
+          'title': newEvent.title,
+          'date': newEvent.date.toUtc(),
+          'addedBy': userUid, // Optional: Store who added the event
+        });
+
+        // Update the local list with the document ID
         _events.add(newEvent);
-      });
 
-      // Add the new event to Firestore
-      await FirebaseFirestore.instance.collection('events').add({
-        'title': newEvent.title,
-        'date': newEvent.date.toUtc(),
-        'addedBy': userUid, // Optional: Store who added the event
-      });
+        // Notify the user that the event has been added
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Event added successfully.'),
+          ),
+        );
 
-      // Notify the user that the event has been added
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Event added successfully.'),
-        ),
-      );
+        // Close the dialog
+        Navigator.pop(context);
+
+        // Refresh the events to reflect the new addition
+        _loadEvents();
+      } catch (error) {
+        // Handle the error, e.g., display an error message
+        print('Error adding event: $error');
+      }
     } else {
       // Non-admin users are not allowed to add events
       ScaffoldMessenger.of(context).showSnackBar(
@@ -418,6 +445,9 @@ class _ActivityPageState extends State<ActivityPage> {
       );
     }
   }
+
+
+
 
 
 }
