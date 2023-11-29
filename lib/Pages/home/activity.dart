@@ -294,7 +294,7 @@ class _ActivityPageState extends State<ActivityPage> {
                     decoration: const InputDecoration(labelText: 'New Event'),
                     onSubmitted: (value) {
                       _addEvent(value);
-                      Navigator.pop(context);
+                      Navigator.pop(context); // Close the dialog after adding the event
                     },
                   ),
               ],
@@ -310,14 +310,15 @@ class _ActivityPageState extends State<ActivityPage> {
                 TextButton(
                   onPressed: () {
                     // You can add additional logic here if needed
-                    Navigator.pop(context);
+                    _addEvent('Default Event'); // Add a default event when "OK" is pressed
+                    Navigator.pop(context); // Close the dialog after adding the event
                   },
                   child: const Text('OK'),
                 ),
             ],
           );
         }
-      },
+      }
     );
   }
   Widget _buildEventItem(Event event, String profileType) {
