@@ -28,8 +28,23 @@ class _ActivityPageState extends State<ActivityPage> {
 
       // Order activities by date in descending order (most recent first)
       _activities.sort((a, b) => b['date'].compareTo(a['date']));
+
+      // Update the calendar events
+      _updateCalendarEvents();
     });
   }
+
+  void _updateCalendarEvents() {
+    _events = _activities
+        .where((activity) => activity.containsKey('date'))
+        .map((activity) {
+      final DateTime activityDate = activity['date'].toDate();
+      return Event(activity['title'], activityDate);
+    }).toList();
+
+    setState(() {});
+  }
+
 
   InkWell activityItem(int index) {
     return InkWell(

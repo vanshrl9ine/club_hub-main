@@ -15,6 +15,13 @@ class NewAnnouncePage extends StatefulWidget {
 }
 
 class _NewAnnouncePageState extends State<NewAnnouncePage> {
+  late DateTime selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedDate = DateTime.now();
+  }
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedImageFile =
@@ -32,6 +39,7 @@ class _NewAnnouncePageState extends State<NewAnnouncePage> {
     description: '',
     image: null,
     createdBy: '',
+    announcementDate: DateTime.now(),
   );
   late ScaffoldMessengerState scaffoldMessenger;
 
@@ -150,64 +158,94 @@ class _NewAnnouncePageState extends State<NewAnnouncePage> {
 
   ElevatedButton publishButton(BuildContext context, Size size) {
     return ElevatedButton(
-        onPressed: () async {
-          if (titleController.text.isEmpty ||
-              descriptionController.text.isEmpty ||
-              announce.image.value == null) {
+      onPressed: () async {
+        if (titleController.text.isEmpty ||
+            descriptionController.text.isEmpty ||
+            announce.image.value == null) {
+          scaffoldMessenger.showSnackBar(const SnackBar(
+              content: Text('Please fill all the fields !!',
+                  style: TextStyle(fontSize: 16))));
+        } else {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              });
+          DocumentSnapshot userData = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .get();
+
+          // Show date picker
+          await _selectDate(context);
+
+          // Update announcement with selected date
+          announce.updateAnnouncement(
+            titleController.text,
+            descriptionController.text,
+            announce.image.value!.path,
+            userData['name'],
+            selectedDate,
+          );
+
+          String result = await announce.uploadToStorage();
+          if (mounted) Navigator.pop(context);
+          if (result == 'success') {
             scaffoldMessenger.showSnackBar(const SnackBar(
-                content: Text('Please fill all the fields !!',
+                content: Text('Announcement Published !!',
                     style: TextStyle(fontSize: 16))));
-          } else {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                });
-            DocumentSnapshot userData = await FirebaseFirestore.instance
-                .collection('users')
-                .doc(FirebaseAuth.instance.currentUser!.uid)
-                .get();
-            announce.updateAnnouncement(
-                titleController.text,
-                descriptionController.text,
-                announce.image.value!.path,
-                userData['name']);
-            String result = await announce.uploadToStorage();
             if (mounted) Navigator.pop(context);
-            if (result == 'success') {
-              scaffoldMessenger.showSnackBar(const SnackBar(
-                  content: Text('Announcement Published !!',
-                      style: TextStyle(fontSize: 16))));
-              if (mounted) Navigator.pop(context);
-            } else {
-              scaffoldMessenger.showSnackBar(SnackBar(
-                  content: Text(result, style: const TextStyle(fontSize: 16))));
-            }
+          } else {
+            scaffoldMessenger.showSnackBar(SnackBar(
+                content: Text(result, style: const TextStyle(fontSize: 16))));
           }
-        },
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
-          backgroundColor: const Color(0xFF4E60FF),
-          elevation: 8,
-          padding: const EdgeInsets.symmetric(vertical: 10),
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
         ),
-        child: const SizedBox(
-            width: 150,
-            height: 25,
-            child: Center(
-                child: Text('Publish',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w700,
-                    )))));
+        backgroundColor: const Color(0xFF4E60FF),
+        elevation: 8,
+        padding: const EdgeInsets.symmetric(vertical: 10),
+      ),
+      child: const SizedBox(
+        width: 150,
+        height: 25,
+        child: Center(
+          child: Text('Publish',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w700,
+              )),
+        ),
+      ),
+    );
   }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+
+
+    if (pickedDate != null) {
+      setState(() {
+        selectedDate = pickedDate;
+        announce.announcementDate.value = pickedDate;
+      });
+    }
+  }
+
+
 }
 
 class MyFormField extends StatelessWidget {

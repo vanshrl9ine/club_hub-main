@@ -77,10 +77,11 @@ class _EditAnnouncementState extends State<EditAnnouncement> {
 
   late ScaffoldMessengerState scaffoldMessenger;
   Announce announce = Announce(
-    title: '',
+    title: '', // Provide the required parameters as needed
     description: '',
     image: null,
-    createdBy: FirebaseAuth.instance.currentUser!.uid,
+    createdBy: '',
+    announcementDate: DateTime.now(), // Provide a default date or fetch it from somewhere
   );
   @override
   Widget build(BuildContext context) {
