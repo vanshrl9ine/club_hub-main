@@ -11,23 +11,31 @@ class Announce extends GetxController {
   final RxString description;
   final Rx<File?> image;
   final RxString createdBy;
-
+  final Rx<DateTime> announcementDate;
   Announce({
     required String title,
     required String description,
     required File? image,
     required String createdBy,
-  })  : title = title.obs,
+    required DateTime announcementDate,
+  })  : announcementDate = announcementDate.obs,
+        title = title.obs,
         description = description.obs,
         image = image.obs,
         createdBy = createdBy.obs;
 
-  void updateAnnouncement(String newTitle, String newDescription,
-      String newImage, String newCreatedBy) {
-    title.value = newTitle;
-    description.value = newDescription;
-    image.value = File(newImage);
-    createdBy.value = newCreatedBy;
+  void updateAnnouncement(
+      String newTitle,
+      String newDescription,
+      String newImage,
+      String newCreatedBy,
+      DateTime selectedDate,
+      ) {
+    this.title.value = newTitle;
+    this.description.value = newDescription;
+    this.image.value = File(newImage);
+    this.createdBy.value = newCreatedBy;
+    this.announcementDate.value = selectedDate;
   }
 
   Future<String> createinFirestore(String url) async {
@@ -37,7 +45,7 @@ class Announce extends GetxController {
         'title': title.value,
         'description': description.value,
         'image': url,
-        'date': date,
+        'date': announcementDate.value,
         'createdBy': createdBy.value,
         'uid': FirebaseAuth.instance.currentUser!.uid,
       });
@@ -46,6 +54,7 @@ class Announce extends GetxController {
       return e.toString();
     }
   }
+
 
   Future<String> uploadToStorage() async {
     try {

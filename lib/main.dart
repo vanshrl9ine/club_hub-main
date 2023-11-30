@@ -85,14 +85,15 @@ class _HomePageState extends State<HomePage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
+
         body: _pages[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.shifting,
-          backgroundColor: Colors.black,
+
           currentIndex: currentIndex,
-          selectedIconTheme: const IconThemeData(color: Colors.blue),
+          selectedIconTheme: const IconThemeData(color: Colors.black),
           selectedFontSize: 14,
-          selectedItemColor: const Color.fromARGB(255, 0, 140, 255),
+          selectedItemColor:  Colors.black,
           unselectedItemColor: Colors.black,
           onTap: (int index) {
             setState(() {
@@ -102,6 +103,7 @@ class _HomePageState extends State<HomePage> {
           items: profileType == 'Admin'
               ? const [
                   BottomNavigationBarItem(
+
                     icon: Icon(Icons.event),
                     label: 'Activity',
                   ),
