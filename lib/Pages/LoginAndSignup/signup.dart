@@ -147,6 +147,13 @@ class _SignupPageState extends State<SignupPage> {
                         scaffoldMessenger.showSnackBar(
                             const SnackBar(content: Text('Enter your name!')));
                       } else {
+                        // Check if the email is from lnmiit.ac.in
+                        if (!emailController.text.endsWith('@lnmiit.ac.in')) {
+                          scaffoldMessenger.showSnackBar(
+                              const SnackBar(content: Text('Sign up is only allowed with @lnmiit.ac.in email addresses')));
+                          return;
+                        }
+
                         if (context.mounted) {
                           showDialog(
                             context: context,
@@ -166,11 +173,14 @@ class _SignupPageState extends State<SignupPage> {
                         if (context.mounted) Navigator.pop(context);
 
                         if (val == 'success') {
-                          // Additional step: Check if email is verified
+                          // Check if email is verified
                           User user = FirebaseAuth.instance.currentUser!;
 
                           if (user.emailVerified) {
-                            // If email is verified, proceed to home page
+                            // Automatically sign in the user
+                            await Auth.signinUser(emailController.text, passwordController.text);
+
+                            // Proceed to home page
                             String ptype = await FirebaseFirestore.instance
                                 .collection('users')
                                 .doc(user.uid)
@@ -188,6 +198,7 @@ class _SignupPageState extends State<SignupPage> {
                                 ),
                               );
                             }
+
                             val = 'Registration Successful';
                           } else {
                             // If email is not verified, show a message and sign out the user
