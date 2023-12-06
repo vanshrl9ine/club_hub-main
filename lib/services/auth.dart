@@ -39,27 +39,46 @@ class Auth {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-              email: email.trim(), password: password.trim());
+          email: email.trim(), password: password.trim());
+
+      // Send email verification
+      await userCredential.user!.sendEmailVerification();
 
       await FirebaseAuth.instance.currentUser!.updateDisplayName(name);
       await FirebaseAuth.instance.currentUser!.updateEmail(email);
       await savetofirestore(name, email, userCredential.user!.uid,
           'https://firebasestorage.googleapis.com/v0/b/clubhub-739f9.appspot.com/o/user_1177568.png?alt=media&token=d1ee94a4-1d7b-4b50-a7af-2b32b7813b2e');
+
       return 'success';
     } catch (e) {
       return e.toString();
     }
   }
 
+
+  // Update your signinUser method in the Auth class
   static Future<String> signinUser(String email, String password) async {
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      return 'success';
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Additional step: Check if email is verified
+      User user = FirebaseAuth.instance.currentUser!;
+
+      if (user.emailVerified) {
+        return 'success';
+      } else {
+        // If email is not verified, sign out the user and show a message
+        await FirebaseAuth.instance.signOut();
+        return 'Email not verified. Check your email inbox.';
+      }
     } catch (e) {
       return e.toString();
     }
   }
+
 
   static Future<String> googleLogin() async {
     GoogleSignIn googleSignIn = GoogleSignIn();

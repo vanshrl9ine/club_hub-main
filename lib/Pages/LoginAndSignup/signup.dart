@@ -152,48 +152,68 @@ class _SignupPageState extends State<SignupPage> {
                             context: context,
                             barrierDismissible: false,
                             builder: (BuildContext context) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
+                              return const Center(child: CircularProgressIndicator());
                             },
                           );
                         }
-                        String val = await Auth.signupUser(emailController.text,
-                            passwordController.text, nameController.text);
-                        if (context.mounted) Navigator.pop(context);
-                        if (val == 'success') {
-                          String ptype = await FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .get()
-                              .then((value) =>
-                                  value.data()!['profileType'].toString());
 
-                          if (context.mounted) {
-                            Navigator.push(
+                        String val = await Auth.signupUser(
+                          emailController.text,
+                          passwordController.text,
+                          nameController.text,
+                        );
+
+                        if (context.mounted) Navigator.pop(context);
+
+                        if (val == 'success') {
+                          // Additional step: Check if email is verified
+                          User user = FirebaseAuth.instance.currentUser!;
+
+                          if (user.emailVerified) {
+                            // If email is verified, proceed to home page
+                            String ptype = await FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(user.uid)
+                                .get()
+                                .then((value) => value.data()!['profileType'].toString());
+
+                            if (context.mounted) {
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomePage(
-                                          currentIndex: 1,
-                                          profileType: ptype,
-                                        )));
+                                  builder: (context) => HomePage(
+                                    currentIndex: 1,
+                                    profileType: ptype,
+                                  ),
+                                ),
+                              );
+                            }
+                            val = 'Registration Successful';
+                          } else {
+                            // If email is not verified, show a message and sign out the user
+                            val = 'Registration Successful. Please verify your email.';
+                            await Auth.logout();
                           }
-                          val = 'Registration Successful';
                         }
-                        scaffoldMessenger.showSnackBar(
-                            SnackBar(content: Text(val.toString())));
+
+                        scaffoldMessenger.showSnackBar(SnackBar(content: Text(val.toString())));
                       }
                     },
                     style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white)),
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                    ),
                     child: const Text(
                       'Sign up',
                       style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
+
+
+
                 ),
                 const SizedBox(
                   height: 20,
