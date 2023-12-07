@@ -345,49 +345,11 @@ class _ActivityPageState extends State<ActivityPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(event.title),
-        if (profileType == 'Admin') // Only admins can delete events
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () {
-              _deleteEvent(event);
-            },
-          ),
+
       ],
     );
   }
-  void _deleteEvent(Event event) async {
-    String userUid = FirebaseAuth.instance.currentUser!.uid;
-    DocumentSnapshot<Map<String, dynamic>> userSnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userUid)
-        .get();
 
-    String profileType = userSnapshot.data()?['profileType'];
-
-    if (profileType == 'Admin') {
-      // Remove the event from the list
-      _events.remove(event);
-
-      // Remove the event from Firestore
-      await FirebaseFirestore.instance.collection('events').doc(event.id).delete();
-
-      setState(() {});
-
-      // Notify the user that the event has been deleted
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Event deleted successfully.'),
-        ),
-      );
-    } else {
-      // Non-admin users are not allowed to delete events
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Only users with admin profile can delete events.'),
-        ),
-      );
-    }
-  }
 
 
   Future<DocumentSnapshot<Map<String, dynamic>>> _getUserSnapshot() async {
