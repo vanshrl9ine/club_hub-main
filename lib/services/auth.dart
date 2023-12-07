@@ -48,7 +48,7 @@ class Auth {
       await FirebaseAuth.instance.currentUser!.updateEmail(email);
       await savetofirestore(name, email, userCredential.user!.uid,
           'https://firebasestorage.googleapis.com/v0/b/clubhub-739f9.appspot.com/o/user_1177568.png?alt=media&token=d1ee94a4-1d7b-4b50-a7af-2b32b7813b2e');
-
+      print('success');
       return 'success';
     } catch (e) {
       return e.toString();
