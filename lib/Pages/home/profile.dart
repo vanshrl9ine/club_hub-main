@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:club_hub/Pages/LoginAndSignup/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:club_hub/Pages/home/myclubs.dart';
 
 import '../../services/auth.dart';
 
@@ -175,42 +176,50 @@ class _ProfilePageState extends State<ProfilePage> {
                                         ],
                                       ),
 
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsetsDirectional.fromSTEB(0, 8, 16, 8),
-                                              child: Icon(
-                                                Icons.group_rounded,
-                                                color: Colors.white,
-                                                size: 24,
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => MyClubsPage()),
+                                          );
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsetsDirectional.fromSTEB(0, 8, 16, 8),
+                                                child: Icon(
+                                                  Icons.group_rounded,
+                                                  color: Colors.white,
+                                                  size: 24,
+                                                ),
                                               ),
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                                                child: Text(
-                                                  'My Clubs',
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.white,
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                                                  child: Text(
+                                                    'My Clubs',
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.white,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            Icon(
-                                              Icons.chevron_right_rounded,
-                                              color: Colors.white,
-                                              size: 24,
-
-                                            ),
-                                          ],
+                                              Icon(
+                                                Icons.chevron_right_rounded,
+                                                color: Colors.white,
+                                                size: 24,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
+
                                       Padding(
                                         padding: const EdgeInsetsDirectional
                                             .fromSTEB(0, 0, 0, 8),
